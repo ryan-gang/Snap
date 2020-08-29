@@ -1,9 +1,13 @@
 from datetime import datetime
+from datetime import timedelta
+
+import os
 import re
+from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
+
 from Snap.credentials import *
-import os
 
 
 def get_site():
@@ -62,13 +66,46 @@ def domain_name(link):
         return link
 
 
-def write_html(webpage):
-    file = "full.html"
+def write_html(webpage, file):
     fhand = open(file, "w")
     for i in webpage:
         fhand.write(i)
-
     fhand.close()
+
+
+def get_required_html(user_date):
+    in_file = "fullwebsite.html"
+    out_file = "full.html"
+    fhand = open(in_file, "r")
+    webpage = fhand.read()
+
+    if isinstance((user_date), str):
+        user_date = datetime.strptime(user_date, "%d/%m/%Y")
+    else:
+        pass
+
+    regex = r"notify-date\">([\s\S]*?)<"
+    match = re.findall(regex, webpage)
+    # print(len(match))
+
+    for i in match:
+        date = i.strip()
+        if (date is not ""):
+            # print("date :", date)
+            formatted_date = datetime.strptime(date, "%d %b %Y %I:%M%p")
+            if formatted_date > user_date:
+                # print(webpage.find(i))
+                pass
+            else:
+                latest = webpage.find(i)
+                # print(webpage.find(i))
+                break
+
+    try:
+        website = webpage[:latest]
+        write_html(website, "full.html")
+    except:
+        write_html(webpage, "full.html")
 
 
 def get_all_links():
@@ -163,6 +200,7 @@ def clean_up():
     home_dir = "G:\Coding\Projects\Snap"
     os.chdir(home_dir)
     try:
+        os.remove("fullwebsite.html")
         os.remove("full.html")
         os.remove("all_links.txt")
         os.remove("drive_links.txt")

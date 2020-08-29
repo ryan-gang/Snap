@@ -18,14 +18,15 @@ if __name__ == '__main__':
         dates = get_all_dates(r.text)
         earliest_date = min(dates)
         print("Earliest date :", earliest_date)
-        print("Attempting to ")
+        print("Attempting to parse links")
         if (earliest_date > end_date_user):
             print("All documents not avalaible throught Get request")
             print("Will attempt to get the site through Chromium")
             seleniumhelper(end_date_user)
         else:
-            write_html(r.text)
+            write_html(r.text, "fullwebsite.html")
 
+    get_required_html(end_date_user)
     get_all_links()
     clean_links()
     cont = input("Start downloading? Y/N ")

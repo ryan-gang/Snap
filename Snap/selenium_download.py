@@ -40,14 +40,7 @@ def selenium_download():
     os.chdir(dir_name)
     print("Current Directory :", os.getcwd())
     chromedriver_path = 'C:/Users/unitel/Downloads/chromedriver.exe'
-    '''
-    path_dest = '//path/to/download/' 
-    prefs = {} 
-    prefs['profile.default_content_settings.popups']=0 
-    prefs['download.default_directory']=path_dest 
-    options = Options() 
-    options.add_experimental_option('prefs',prefs)
-    '''
+
     download_path = r"G:\Coding\Projects\Snap\downloads"
     headless = False
     if headless:

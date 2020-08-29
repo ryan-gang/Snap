@@ -52,7 +52,7 @@ def seleniumhelper(end_date_user):
         webpage = wd.page_source
         earliest_date = min(get_all_dates(webpage))
 
-    write_html(webpage)
+    write_html(webpage, "fullwebsite.html")
 
     wd.close()
     wd.quit()
