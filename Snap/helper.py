@@ -3,6 +3,7 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from Snap.credentials import *
+import os
 
 
 def get_site():
@@ -39,6 +40,12 @@ def domain_name_deprecated(link):
     return domain
 
 
+def full_yt_link(link):
+    param = link.split("/")[-1]
+    base = "https://www.youtube.com/watch?v="
+    return base + param
+
+
 def domain_name(link):
     try:
         regex = r"[a-zA-Z]*://(.*?)[.](.*?)[./]"
@@ -56,7 +63,7 @@ def domain_name(link):
 
 
 def write_html(webpage):
-    file = "full.txt"
+    file = "full.html"
     fhand = open(file, "w")
     for i in webpage:
         fhand.write(i)
@@ -65,17 +72,18 @@ def write_html(webpage):
 
 
 def get_all_links():
-    outfile = "links.txt"
+    outfile = "all_links.txt"
     fout = open(outfile, "w")
     # regex = r"[\'\"](https://.+?)[\'\"]"
     regex = r"[\'\"\s](https://.+?)[\'\"\s]"
     files = []
 
-    file = "full.txt"
+    file = "full.html"
     fhand = open(file, "r", encoding = "utf-8", errors = "surrogateescape")
     text = fhand.read()
     fhand.close()
     match = (re.findall(regex, text))
+    print("Found", len(match), "links.")
     # not_allowed = ["apple", "snapworks", "googleapis", "gstatic", "firebaseio", "googletagmanager", "play"]
     for i in match:
         # print(i)
@@ -83,20 +91,20 @@ def get_all_links():
         fout.write(i)
         fout.write("\n")
 
-    print(len(files))
+    # print(len(files))
     fout.close()
 
 
 def clean_links():
     drivedomains = ["drive"]
-    ytdomains = ["youtu"]
+    ytdomains = ["youtu", "youtube"]
     otherdomains = ["storage", "itunes", "play", "nani", "gstatic", "gcptest-poc", "s3-us-west-2",
                     "swlivestorage", "googletagmanager"]
     xdomains = ["snapworks"]
     yt = []
     drive = []
     other = []
-    file = "links.txt"
+    file = "all_links.txt"
     fhand = open(file, "r")
     for link in fhand:
         link = link.strip()
@@ -114,12 +122,20 @@ def clean_links():
         else:
             other.append(link)
 
+    print("Number of youtube links :", len(yt))
+    print("Number of google drive links :", len(drive))
+    print("Number of other links :", len(other))
     yt_file = "yt_links.txt"
     drive_file = "drive_links.txt"
     other_file = "others_links.txt"
+
     fout = open(yt_file, "w")
     for link in yt:
-        fout.write(link)
+        if ((domain_name(link)) == "youtu"):
+            new_link = full_yt_link(link)
+        else:
+            new_link = link
+        fout.write(new_link)
         fout.write("\n")
     fout.close()
 
@@ -134,3 +150,23 @@ def clean_links():
         fout.write(link)
         fout.write("\n")
     fout.close()
+    return
+
+
+next_steps = """
+If there are links in yt_links.txt, copy them and paste them into the YT-DLG app. It will automatically download them.
+Also I'd suggest take a look at the other_links.txt file. It should contain a lot of helpful links.
+"""
+
+
+def clean_up():
+    home_dir = "G:\Coding\Projects\Snap"
+    os.chdir(home_dir)
+    try:
+        os.remove("full.html")
+        os.remove("all_links.txt")
+        os.remove("drive_links.txt")
+    except:
+        pass
+
+    print("Finished cleaning up.")

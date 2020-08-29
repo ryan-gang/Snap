@@ -18,6 +18,7 @@ if __name__ == '__main__':
         dates = get_all_dates(r.text)
         earliest_date = min(dates)
         print("Earliest date :", earliest_date)
+        print("Attempting to ")
         if (earliest_date > end_date_user):
             print("All documents not avalaible throught Get request")
             print("Will attempt to get the site through Chromium")
@@ -27,4 +28,8 @@ if __name__ == '__main__':
 
     get_all_links()
     clean_links()
-    selenium_download()
+    cont = input("Start downloading? Y/N ")
+    if (cont.lower() == "y"):
+        selenium_download()
+    clean_up()
+    print(next_steps)
