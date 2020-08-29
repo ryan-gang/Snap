@@ -1,23 +1,23 @@
-from credentials import *
-import requests
-from bs4 import BeautifulSoup
 from datetime import datetime
 import re
+import requests
+from bs4 import BeautifulSoup
+from Snap.credentials import *
 
 
 def get_site():
     url = "https://web.snapworks.me/parent-students/activities"
-    r = requests.get(url, cookies=cookies)
+    r = requests.get(url, cookies = cookies)
     return r
 
 
 def get_all_dates(webpage):
     soup = BeautifulSoup(webpage, "html.parser")
-    all_dates = soup.find_all("span", class_="notify-date")
+    all_dates = soup.find_all("span", class_ = "notify-date")
     formatted_dates = []
     for i in (range(len(all_dates))):
         try:
-            date = soup.find_all("span", class_="notify-date")[i].text.strip()
+            date = soup.find_all("span", class_ = "notify-date")[i].text.strip()
             formatted_dates.append(datetime.strptime(date, "%d %b %Y %I:%M%p"))
         except ValueError:
             pass
@@ -64,9 +64,6 @@ def write_html(webpage):
     fhand.close()
 
 
-import re
-
-
 def get_all_links():
     outfile = "links.txt"
     fout = open(outfile, "w")
@@ -75,7 +72,7 @@ def get_all_links():
     files = []
 
     file = "full.txt"
-    fhand = open(file, "r", encoding="utf-8", errors="surrogateescape")
+    fhand = open(file, "r", encoding = "utf-8", errors = "surrogateescape")
     text = fhand.read()
     fhand.close()
     match = (re.findall(regex, text))
@@ -93,7 +90,7 @@ def get_all_links():
 def clean_links():
     drivedomains = ["drive"]
     ytdomains = ["youtu"]
-    otherdomains = ["storage", "itunes", "play", "nani", "gstatic", "gcptest-poc",  "s3-us-west-2",
+    otherdomains = ["storage", "itunes", "play", "nani", "gstatic", "gcptest-poc", "s3-us-west-2",
                     "swlivestorage", "googletagmanager"]
     xdomains = ["snapworks"]
     yt = []

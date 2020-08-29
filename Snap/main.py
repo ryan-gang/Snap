@@ -1,5 +1,7 @@
-from selenium_helper import *
-from selenium_download import *
+from Snap.selenium_helper import *
+from Snap.selenium_download import *
+from Snap.helper import *
+
 
 if __name__ == '__main__':
     end_date = input("Enter the latest date (DD/MM/YYYY) upto which you wish to fetch documents : ")
