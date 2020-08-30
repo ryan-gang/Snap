@@ -1,11 +1,10 @@
 import os
 from time import sleep
-
-from fake_useragent import UserAgent
-from Snap.helper import *
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from fake_useragent import UserAgent
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+from Snap.helper import *
 
 
 def seleniumhelper(end_date_user):

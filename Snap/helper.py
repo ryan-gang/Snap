@@ -1,10 +1,8 @@
-from datetime import datetime
-from datetime import timedelta
-
 import os
 import re
-from datetime import datetime
 import requests
+from datetime import datetime
+from datetime import timedelta
 from bs4 import BeautifulSoup
 
 from Snap.credentials import *

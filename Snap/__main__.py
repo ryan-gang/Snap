@@ -1,6 +1,6 @@
+from Snap.helper import *
 from Snap.selenium_helper import *
 from Snap.selenium_download import *
-from Snap.helper import *
 
 
 if __name__ == '__main__':
